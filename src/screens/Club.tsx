@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react'
 import type { Run } from '../App'
 import { fmt, formatDate, todayIso } from '../calc'
 import type { Data } from '../schema'
+import { signedInName } from '../google/auth'
 
 interface Props {
   data: Data
@@ -20,7 +21,7 @@ function savedName(): string {
 }
 
 export function Club({ data, run, busy }: Props) {
-  const [name, setName] = useState(savedName)
+  const [name, setName] = useState(() => savedName() || signedInName())
   const book = data.books.find((b) => b.stage === 'Drafting') ?? data.books[0]
   const weekAgo = todayIso(new Date(Date.now() - 6 * 86_400_000))
   const wordsThisWeek = data.sessions.filter((s) => s.date >= weekAgo).reduce((n, s) => n + s.words, 0)

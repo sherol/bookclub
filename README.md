@@ -4,7 +4,7 @@ Mock and logo: [design/](design/)
 
 ## App
 
-Live at https://sherol.github.io/bookclub/ — it shows sample data until you connect a Google Sheet ([setup](docs/google-setup.md)).
+Live at https://sherol.github.io/bookclub/ — it shows sample data until you connect a Google Sheet. Sign-in uses the same Firebase project as SheetSync ([details](docs/google-setup.md)).
 
 ```sh
 npm install

@@ -1,43 +1,28 @@
 # Connecting Google Sheets
 
-The app runs without this, on sample data. To save real books, it needs a Google OAuth client ID. The ID is public and safe to put in the repo settings; there is no secret.
+Bookclub signs in with Google through **Firebase Auth**, using the same Firebase project and OAuth client as [SheetSync](https://github.com/sherol/sheetsync) (project `gen-lang-client-0263183169`). There is no client ID or secret to set in this repo: the Firebase web config in `src/google/auth.ts` is public and identifies the project.
 
-## 1. Create the client ID (once, about 10 minutes)
+## What the shared project needs
 
-1. Open [Google Cloud Console](https://console.cloud.google.com/) and create a project, for example **Bookclub**.
-2. **APIs & Services › Library:** enable **Google Sheets API** and **Google Drive API**.
-3. **APIs & Services › OAuth consent screen** (shown as **Google Auth Platform** in newer consoles):
-   - User type **External**, app name **Bookclub**, your email as support and developer contact.
-   - **Data access / Scopes:** add `https://www.googleapis.com/auth/drive.file`. This lets the app see only the sheet it creates, not the rest of anyone's Drive.
-   - **Audience / Test users:** add your own Google account and each club member's. While the app is in "Testing", only these accounts can sign in.
-4. **Credentials › Create credentials › OAuth client ID:**
-   - Application type **Web application**.
-   - **Authorized JavaScript origins:** `https://sherol.github.io` and, for local development, `http://localhost:5173`.
-   - No redirect URIs are needed.
-5. Copy the client ID (it ends in `.apps.googleusercontent.com`).
+SheetSync already uses this project from `sherol.github.io`, so these should already be in place. If sign-in fails, check them in this order:
 
-## 2. Give it to the site
+1. **Authorized domain.** [Firebase console](https://console.firebase.google.com/) › the project › **Authentication › Settings › Authorized domains** must list `sherol.github.io`. `localhost` is there by default for `npm run dev`. If it's missing, the app says "This site isn't on the Firebase project's list of authorized domains".
+2. **APIs.** In [Google Cloud Console](https://console.cloud.google.com/) for the same project, **APIs & Services › Library**: **Google Sheets API** and **Google Drive API** are enabled.
+3. **Scope.** **OAuth consent screen › Data access** includes `https://www.googleapis.com/auth/drive.file`. Bookclub asks only for this scope, so it sees only the sheet it creates, not the rest of anyone's Drive.
+4. **Who can sign in.** While the consent screen is in **Testing**, only the accounts under **Audience › Test users** can sign in. Add each club member there, or publish the app.
 
-In the GitHub repo: **Settings › Secrets and variables › Actions › Variables › New repository variable**
+Because the project is shared, Google's consent window shows that project's app name (the one set for SheetSync). You can change it under **OAuth consent screen › Branding** to something that covers both apps.
 
-- Name: `GOOGLE_CLIENT_ID`
-- Value: the client ID
+## Using it
 
-Then re-run the deploy: **Actions › Deploy to GitHub Pages › Run workflow** (or push to `main`).
+On the site, click **Connect Google Sheet** and approve access in the Google window. The first time, the app creates a sheet called **Bookclub** in your Drive with every tab, header row and dropdown set up. After that it finds the same sheet again.
 
-For local development, copy `.env.example` to `.env.local` and paste the ID there, then `npm run dev`.
-
-## 3. Use it
-
-On the site, click **Connect Google Sheet** and approve access. The first time, the app creates a sheet called **Bookclub** in your Drive with every tab, header row and dropdown set up. After that it finds the same sheet again.
-
-- Rows you add or change in the sheet show up in the app; the app reads columns by header name, so don't rename the headers.
+- Rows you add or change in the sheet show up in the app. The app reads columns by header name, so don't rename the headers.
 - **Current words** on the Books tab is a formula that totals the Sessions tab. Don't type over it.
-- Google's browser sign-in lasts for the open page, so after a refresh click **Reconnect**. Your data is in the sheet, not the browser.
+- Google's access lasts about an hour and for the open page only. When it runs out, or after a refresh, click **Reconnect**. Your data is in the sheet, not the browser.
 
 ## Not built yet
 
 - A shared Club sheet for the whole club. Check-ins currently go to the Club tab of each person's own sheet.
-- Chapters, Story bible, Milestones and Contributors tabs are created but have no screens yet.
+- Screens for the Chapters, Story bible, Milestones and Contributors tabs (the tabs are created).
 - The AI request/reply handoff from the design doc.
-- Publishing the consent screen out of "Testing", which Google requires before people who aren't listed test users can sign in.

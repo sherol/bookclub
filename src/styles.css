@@ -121,3 +121,4 @@ label.inline select { flex: 1; min-width: 0; width: 100%; }
   .topbar, .main { padding-left: 16px; padding-right: 16px; }
   .banner { padding-left: 16px; padding-right: 16px; }
 }
+.small-btn { min-height: 36px; padding: 0 12px; margin-left: 8px; }

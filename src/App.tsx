@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import { clientId, getToken, signIn, signOut } from './google/auth'
+import { SignInNeeded, getToken, signIn, signInAvailable, signOut } from './google/auth'
 import { AuthError, SheetsClient } from './google/sheets'
 import { Logo } from './Logo'
 import type { Data } from './schema'
@@ -43,6 +43,7 @@ export function App() {
   const [data, setData] = useState<Data | null>(null)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
+  const [expired, setExpired] = useState(false)
 
   useEffect(() => {
     const onHash = () => setRoute(currentRoute())
@@ -66,6 +67,7 @@ export function App() {
       await reload(store)
     } catch (e) {
       setError(messageOf(e))
+      setExpired(isExpired(e))
     } finally {
       setBusy(false)
     }
@@ -74,12 +76,13 @@ export function App() {
   async function connect() {
     setBusy(true)
     setError('')
+    setExpired(false)
     try {
       await signIn()
       const client = new SheetsClient(getToken)
       await client.open()
       rememberConnected(true)
-      setData(null)
+      if (store.kind !== 'sheet') setData(null)
       setStore(new SheetStore(client))
     } catch (e) {
       setError(messageOf(e))
@@ -119,7 +122,7 @@ export function App() {
                 Sign out
               </button>
             </>
-          ) : clientId ? (
+          ) : signInAvailable ? (
             <button type="button" className="btn" onClick={connect} disabled={busy}>
               {wasConnected() ? 'Reconnect Google Sheet' : 'Connect Google Sheet'}
             </button>
@@ -129,9 +132,9 @@ export function App() {
 
       {store.kind === 'demo' && (
         <p className="banner">
-          {clientId && wasConnected()
+          {signInAvailable && wasConnected()
             ? 'You’re looking at sample data. Reconnect to see your books — they’re safe in your sheet.'
-            : clientId
+            : signInAvailable
             ? 'You’re looking at sample data. Connect your Google Sheet to save your own books — the app creates a “Bookclub” sheet in your Drive the first time.'
             : 'You’re looking at sample data. Google sign-in isn’t set up for this site yet (see docs/google-setup.md).'}
         </p>
@@ -139,6 +142,14 @@ export function App() {
       {error && (
         <p className="banner error" role="alert">
           {error}
+          {expired && (
+            <>
+              {' '}
+              <button type="button" className="btn small-btn" onClick={connect} disabled={busy}>
+                Reconnect
+              </button>
+            </>
+          )}
         </p>
       )}
 
@@ -157,7 +168,11 @@ export function App() {
   )
 }
 
+function isExpired(e: unknown): boolean {
+  return e instanceof AuthError || e instanceof SignInNeeded
+}
+
 function messageOf(e: unknown): string {
-  if (e instanceof AuthError) return 'Your Google sign-in expired. Sign out and connect again.'
+  if (isExpired(e)) return 'Your Google sign-in expired. Reconnect to keep saving; nothing was lost.'
   return e instanceof Error ? e.message : String(e)
 }
