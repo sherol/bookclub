@@ -1,0 +1,1 @@
+{"root":["./src/App.tsx","./src/Logo.tsx","./src/calc.test.ts","./src/calc.ts","./src/main.tsx","./src/schema.ts","./src/store.ts","./src/vite-env.d.ts","./src/google/auth.ts","./src/google/sheets.test.ts","./src/google/sheets.ts","./src/screens/Board.tsx","./src/screens/Club.tsx","./src/screens/Today.tsx","./vite.config.ts"],"version":"6.0.3"}
