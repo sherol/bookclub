@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Club</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&amp;family=Nunito+Sans:wght@400;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#FFA726}a:hover{color:#FFE082}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #0B111B; color: #F2F4F8; font-family: 'Nunito Sans', sans-serif; font-size: 15px; display: flex; flex-direction: column">
+  <header style="padding: 20px 20px 16px; background: #111A28; color: #FFFFFF; border-bottom: 1px solid #24324A">
+    <div style="font-size: 13px; color: #A9B7C9">[Club name] · a drey of 5 writers · host: [Member]</div>
+    <h1 style="margin: 4px 0 0; font-family: 'Fredoka', sans-serif; font-size: 28px; font-weight: 700">Club</h1>
+  </header>
+
+  <div style="flex: 1; overflow: hidden; padding: 16px 20px; display: flex; flex-direction: column; gap: 14px">
+    <section style="background: #2A1E10; border: 1px solid #8A5A1A; border-radius: 14px; padding: 14px 16px">
+      <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px">
+        <h2 style="margin: 0; font-size: 16px; font-weight: 600">Your weekly check-in</h2>
+        <span style="font-size: 12px; font-weight: 600; color: #FFB300">Due Sunday</span>
+      </div>
+      <p style="margin: 6px 0 12px; font-size: 13px; color: #E8C9A0">Pre-filled from your sessions and tasks. Edit, then post.</p>
+      <div style="background: #16202F; border-radius: 10px; padding: 12px; font-size: 14px; line-height: 1.55">
+        <div><b>Book:</b> [Working title B] — Drafting</div>
+        <div><b>This week:</b> 4,820 words</div>
+        <div><b>Win:</b> finished the midpoint chapter</div>
+        <div><b>Stuck on:</b> [one problem, or “nothing”]</div>
+        <div><b>Ask:</b> [the help you want]</div>
+        <div><b>Next week:</b> reach 46,000 words</div>
+      </div>
+      <button type="button" style="margin-top: 12px; width: 100%; min-height: 48px; border: 0; border-radius: 10px; background: #FF8F00; color: #0B111B; font: inherit; font-weight: 600; cursor: pointer">Post check-in</button>
+    </section>
+
+    <h2 style="margin: 4px 0 0; font-size: 16px; font-weight: 600">This week in the club</h2>
+
+    <article style="background: #16202F; border: 1px solid #24324A; border-radius: 14px; padding: 14px 16px">
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px">
+        <span aria-hidden="true" style="width: 36px; height: 36px; border-radius: 50%; background: #CFE0F2; display: flex; align-items: center; justify-content: center; font-weight: 600; color: #1D3D5C">M</span>
+        <div>
+          <div style="font-weight: 600">[Member 1]</div>
+          <div style="font-size: 12px; color: #8FA0B5">[Their book] · Revision</div>
+        </div>
+      </div>
+      <p style="margin: 0 0 6px; font-size: 14px"><b>Ask:</b> Does chapter 2’s opening hook you? One page.</p>
+      <div style="display: flex; gap: 8px; flex-wrap: wrap">
+        <button type="button" style="min-height: 44px; padding: 0 14px; border: 1px solid #3A4A63; border-radius: 10px; background: #16202F; color: #F2F4F8; font: inherit; font-size: 14px; cursor: pointer">Reply</button>
+        <span style="align-self: center; font-size: 13px; color: #8FA0B5">2 replies</span>
+      </div>
+    </article>
+
+    <article style="background: #16202F; border: 1px solid #24324A; border-radius: 14px; padding: 14px 16px">
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px">
+        <span aria-hidden="true" style="width: 36px; height: 36px; border-radius: 50%; background: #E3D9F0; display: flex; align-items: center; justify-content: center; font-weight: 600; color: #3E2A5C">J</span>
+        <div>
+          <div style="font-weight: 600">[Member 2]</div>
+          <div style="font-size: 12px; color: #8FA0B5">[Their book] · Drafting</div>
+        </div>
+      </div>
+      <p style="margin: 0 0 6px; font-size: 14px"><b>Win:</b> 3 sessions in a row. <b>Ask:</b> a nudge on Thursday.</p>
+      <div style="display: flex; gap: 8px; flex-wrap: wrap">
+        <button type="button" style="min-height: 44px; padding: 0 14px; border: 1px solid #3A4A63; border-radius: 10px; background: #16202F; color: #F2F4F8; font: inherit; font-size: 14px; cursor: pointer">Reply</button>
+        <span style="align-self: center; font-size: 13px; color: #FF7B72; font-weight: 600">No replies yet</span>
+      </div>
+    </article>
+  </div>
+
+  <nav aria-label="Main" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid #24324A; background: #16202F">
+    <a href="Main.dc.html" style="min-height: 56px; display: flex; align-items: center; justify-content: center; text-decoration: none; color: #8FA0B5; font-size: 13px">Board</a>
+    <a href="Today.dc.html" style="min-height: 56px; display: flex; align-items: center; justify-content: center; text-decoration: none; color: #8FA0B5; font-size: 13px">Today</a>
+    <a href="#" style="min-height: 56px; display: flex; align-items: center; justify-content: center; text-decoration: none; color: #8FA0B5; font-size: 13px">Bible</a>
+    <a href="#" style="min-height: 56px; display: flex; align-items: center; justify-content: center; text-decoration: none; color: #FFA726; font-size: 13px; font-weight: 600; border-top: 3px solid #FFA726">Club</a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

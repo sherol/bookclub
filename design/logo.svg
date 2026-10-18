@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Bookclub logo: a squirrel drawn from the letters b, o, o, k, c, l, u, b, perched on an open book" viewBox="0 0 800 660" width="800" height="660">
+  <defs>
+    <style>@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@600;900&amp;family=Playfair+Display:ital,wght@1,600&amp;display=swap");</style>
+    <radialGradient id="bgGrad" cx="50%" cy="45%" r="65%"><stop offset="0%" stop-color="#1A2639"></stop><stop offset="100%" stop-color="#0B111B"></stop></radialGradient>
+    <linearGradient id="tailGrad" x1="0%" y1="100%" x2="50%" y2="0%"><stop offset="0%" stop-color="#E65100"></stop><stop offset="50%" stop-color="#FF7A00"></stop><stop offset="100%" stop-color="#FFA726"></stop></linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FFE082"></stop><stop offset="50%" stop-color="#FFB300"></stop><stop offset="100%" stop-color="#FF8F00"></stop></linearGradient>
+    <linearGradient id="bodyGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FF8A65"></stop><stop offset="100%" stop-color="#D84315"></stop></linearGradient>
+    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#FF6F00" flood-opacity="0.25"></feDropShadow></filter>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#bgGrad)"></rect>
+  <circle cx="400" cy="245" r="195" fill="none" stroke="#FFA726" stroke-width="1.5" stroke-opacity="0.15" stroke-dasharray="6 6"></circle>
+  <g filter="url(#softGlow)">
+    <path d="M 285 365 C 210 365, 145 285, 150 195 C 155 105, 225 50, 310 50 C 385 50, 420 95, 410 155 C 400 215, 345 240, 290 235 C 245 230, 220 195, 230 160 C 240 125, 275 110, 305 125 C 330 138, 335 170, 310 185 C 295 195, 275 185, 275 175" fill="none" stroke="url(#tailGrad)" stroke-width="32" stroke-linecap="round" stroke-linejoin="round"></path>
+    <path d="M 320 250 C 320 330, 335 375, 385 375 C 430 375, 440 335, 440 270" fill="none" stroke="url(#bodyGrad)" stroke-width="26" stroke-linecap="round"></path>
+    <path d="M 275 390 L 375 390 C 410 390, 410 345, 375 345 C 345 345, 340 365, 340 390" fill="none" stroke="url(#tailGrad)" stroke-width="18" stroke-linecap="round"></path>
+    <line x1="450" y1="265" x2="450" y2="390" stroke="url(#bodyGrad)" stroke-width="22" stroke-linecap="round"></line>
+    <path d="M 505 235 C 460 220, 440 240, 445 265 C 450 288, 480 295, 508 280" fill="none" stroke="url(#goldGrad)" stroke-width="18" stroke-linecap="round"></path>
+    <circle cx="530" cy="260" r="22" fill="none" stroke="url(#goldGrad)" stroke-width="14"></circle>
+    <circle cx="465" cy="155" r="38" fill="none" stroke="url(#tailGrad)" stroke-width="24"></circle>
+    <circle cx="478" cy="150" r="5" fill="#FFE082"></circle>
+    <path d="M 432 90 L 432 185" stroke="url(#goldGrad)" stroke-width="16" stroke-linecap="round"></path>
+    <path d="M 432 140 L 472 82" stroke="url(#goldGrad)" stroke-width="16" stroke-linecap="round"></path>
+    <path d="M 432 145 L 515 168" stroke="url(#goldGrad)" stroke-width="15" stroke-linecap="round"></path>
+  </g>
+  <g transform="translate(260, 415)">
+    <path d="M 0 10 Q 140 -8 280 10 L 270 25 Q 140 10 0 25 Z" fill="#FFA726" fill-opacity="0.3"></path>
+    <path d="M 5 12 Q 140 -5 275 12" fill="none" stroke="#FFE082" stroke-width="3" stroke-linecap="round"></path>
+    <line x1="140" y1="0" x2="140" y2="28" stroke="#FFE082" stroke-width="3"></line>
+  </g>
+  <text x="400" y="505" text-anchor="middle" font-family="'Montserrat', sans-serif" font-size="42" font-weight="900" letter-spacing="14" fill="#FFFFFF">BOOKCLUB</text>
+  <text x="408" y="542" text-anchor="middle" font-family="'Playfair Display', serif" font-style="italic" font-size="16" letter-spacing="4" fill="#FFB300">b • o • o • k • c • l • u • b</text>
+  <text x="400" y="585" text-anchor="middle" font-family="'Montserrat', sans-serif" font-size="11" font-weight="600" letter-spacing="6" fill="#8FA0B5">STORIES WORTH STASHING</text>
+</svg>

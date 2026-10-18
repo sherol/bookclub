@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Portfolio board</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&amp;family=Nunito+Sans:wght@400;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0B111B}
+a{color:#FFA726}a:hover{color:#FFE082}
+</style>
+</helmet>
+<div style="min-height: 900px; background: #0B111B; color: #F2F4F8; font-family: 'Nunito Sans', sans-serif; font-size: 15px">
+  <header style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding: 16px 32px; background: #111A28; color: #FFFFFF; border-bottom: 1px solid #24324A">
+    <div style="display: flex; align-items: center; gap: 12px">
+      <svg aria-hidden="true" width="52" height="51" viewBox="135 35 420 410">
+        <defs>
+          <linearGradient id="hdrTail" x1="0%" y1="100%" x2="50%" y2="0%"><stop offset="0%" stop-color="#E65100"></stop><stop offset="50%" stop-color="#FF7A00"></stop><stop offset="100%" stop-color="#FFA726"></stop></linearGradient>
+          <linearGradient id="hdrGold" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FFE082"></stop><stop offset="50%" stop-color="#FFB300"></stop><stop offset="100%" stop-color="#FF8F00"></stop></linearGradient>
+          <linearGradient id="hdrBody" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FF8A65"></stop><stop offset="100%" stop-color="#D84315"></stop></linearGradient>
+        </defs>
+        <path d="M 285 365 C 210 365, 145 285, 150 195 C 155 105, 225 50, 310 50 C 385 50, 420 95, 410 155 C 400 215, 345 240, 290 235 C 245 230, 220 195, 230 160 C 240 125, 275 110, 305 125 C 330 138, 335 170, 310 185 C 295 195, 275 185, 275 175" fill="none" stroke="url(#hdrTail)" stroke-width="32" stroke-linecap="round" stroke-linejoin="round"></path>
+        <path d="M 320 250 C 320 330, 335 375, 385 375 C 430 375, 440 335, 440 270" fill="none" stroke="url(#hdrBody)" stroke-width="26" stroke-linecap="round"></path>
+        <path d="M 275 390 L 375 390 C 410 390, 410 345, 375 345 C 345 345, 340 365, 340 390" fill="none" stroke="url(#hdrTail)" stroke-width="18" stroke-linecap="round"></path>
+        <line x1="450" y1="265" x2="450" y2="390" stroke="url(#hdrBody)" stroke-width="22" stroke-linecap="round"></line>
+        <path d="M 505 235 C 460 220, 440 240, 445 265 C 450 288, 480 295, 508 280" fill="none" stroke="url(#hdrGold)" stroke-width="18" stroke-linecap="round"></path>
+        <circle cx="530" cy="260" r="22" fill="none" stroke="url(#hdrGold)" stroke-width="14"></circle>
+        <circle cx="465" cy="155" r="38" fill="none" stroke="url(#hdrTail)" stroke-width="24"></circle>
+        <circle cx="478" cy="150" r="5" fill="#FFE082"></circle>
+        <path d="M 432 90 L 432 185" stroke="url(#hdrGold)" stroke-width="16" stroke-linecap="round"></path>
+        <path d="M 432 140 L 472 82" stroke="url(#hdrGold)" stroke-width="16" stroke-linecap="round"></path>
+        <path d="M 432 145 L 515 168" stroke="url(#hdrGold)" stroke-width="15" stroke-linecap="round"></path>
+        <g transform="translate(260, 415)">
+          <path d="M 0 10 Q 140 -8 280 10 L 270 25 Q 140 10 0 25 Z" fill="#FFA726" fill-opacity="0.3"></path>
+          <path d="M 5 12 Q 140 -5 275 12" fill="none" stroke="#FFE082" stroke-width="3" stroke-linecap="round"></path>
+          <line x1="140" y1="0" x2="140" y2="28" stroke="#FFE082" stroke-width="3"></line>
+        </g>
+      </svg>
+      <span style="font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 22px">Bookclub</span>
+    </div>
+    <nav aria-label="Main" style="display: flex; flex-wrap: wrap; gap: 4px">
+      <a href="#" style="color: #FFFFFF; text-decoration: none; padding: 10px 14px; border-radius: 8px; background: rgba(255,255,255,0.16); font-weight: 600">Board</a>
+      <a href="Today.dc.html" style="color: #A9B7C9; text-decoration: none; padding: 10px 14px; border-radius: 8px">Today</a>
+      <a href="#" style="color: #A9B7C9; text-decoration: none; padding: 10px 14px; border-radius: 8px">Trailhead</a>
+      <a href="#" style="color: #A9B7C9; text-decoration: none; padding: 10px 14px; border-radius: 8px">Story bible</a>
+      <a href="Club.dc.html" style="color: #A9B7C9; text-decoration: none; padding: 10px 14px; border-radius: 8px">Club</a>
+    </nav>
+    <div style="display: flex; align-items: center; gap: 10px">
+      <span style="font-size: 13px; color: #A9B7C9">Saved to your sheet</span>
+      <span aria-label="Signed in as Sherol" style="width: 36px; height: 36px; border-radius: 50%; background: #FFB300; color: #0B111B; display: flex; align-items: center; justify-content: center; font-weight: 600">S</span>
+    </div>
+  </header>
+
+  <main style="max-width: 1440px; margin: 0 auto; padding: 28px 32px 40px; box-sizing: border-box">
+    <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 20px">
+      <div>
+        <h1 style="margin: 0; font-family: 'Fredoka', sans-serif; font-size: 32px; font-weight: 700">Portfolio board</h1>
+        <p style="margin: 6px 0 0; color: #8FA0B5">5 books in flight · drag a card to move it to the next stage</p>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; gap: 12px">
+        <div style="padding: 10px 14px; border-radius: 10px; background: #16202F; border: 1px solid #24324A">
+          <div style="font-size: 12px; color: #8FA0B5">Drafting slot</div>
+          <div style="font-weight: 600">1 of 1 · full</div>
+        </div>
+        <div style="padding: 10px 14px; border-radius: 10px; background: #16202F; border: 1px solid #24324A">
+          <div style="font-size: 12px; color: #8FA0B5">Revision slot</div>
+          <div style="font-weight: 600">1 of 1 · full</div>
+        </div>
+        <div style="padding: 10px 14px; border-radius: 10px; background: #16202F; border: 1px solid #24324A">
+          <div style="display: flex; align-items: center; gap: 4px; font-size: 12px; color: #8FA0B5"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF8F00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10c0-3 3.6-5 8-5s8 2 8 5z"></path><path d="M6 10v2c0 4 3 8 6 9 3-1 6-5 6-9v-2"></path><path d="M12 5V2.5"></path></svg>Words stashed this week</div>
+          <div style="font-weight: 600">4,820 / 5,000</div>
+        </div>
+        <button type="button" style="min-height: 44px; padding: 0 18px; border: 0; border-radius: 10px; background: #FF8F00; color: #0B111B; font: inherit; font-weight: 600; cursor: pointer">+ Add a book</button>
+      </div>
+    </div>
+
+    <div style="overflow-x: auto; padding-bottom: 8px">
+      <div style="display: grid; grid-template-columns: repeat(8, minmax(200px, 1fr)); gap: 12px; min-width: 1660px">
+        <sc-for list="{{stages}}" as="st" hint-placeholder-count="8">
+          <section style="{{st.colStyle}}">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px">
+              <h2 style="margin: 0; font-family: 'Fredoka', sans-serif; font-size: 16px; font-weight: 600">{{st.num}}. {{st.name}}</h2>
+              <span style="font-size: 13px; color: #8FA0B5">{{st.count}}</span>
+            </div>
+            <p style="margin: 0 0 12px; font-size: 12px; color: #8FA0B5; line-height: 1.4">Exit: {{st.gate}}</p>
+            <div style="display: flex; flex-direction: column; gap: 10px">
+              <sc-for list="{{st.books}}" as="b" hint-placeholder-count="1">
+                <article style="background: #16202F; border: 1px solid #24324A; border-radius: 10px; padding: 12px">
+                  <div style="font-size: 12px; color: #8FA0B5">{{b.series}}</div>
+                  <h3 style="margin: 2px 0 8px; font-size: 15px; font-weight: 600">{{b.title}}</h3>
+                  <sc-if value="{{b.hasBar}}" hint-placeholder-val="{{true}}">
+                    <div role="img" aria-label="{{b.barLabel}}" style="height: 6px; border-radius: 3px; background: #24324A; overflow: hidden; margin-bottom: 6px">
+                      <div style="{{b.barStyle}}"></div>
+                    </div>
+                  </sc-if>
+                  <div style="font-size: 13px; color: #C9D3E0">{{b.detail}}</div>
+                  <div style="{{b.dueStyle}}">{{b.due}}</div>
+                </article>
+              </sc-for>
+            </div>
+          </section>
+        </sc-for>
+      </div>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1360,"height":900}}'>
+class Component extends DCLogic {
+renderVals() {
+const book = (series, title, detail, due, pct, late) => ({
+  series, title, detail, due,
+  hasBar: pct != null,
+  barLabel: pct != null ? pct + '% of target words' : '',
+  barStyle: 'height: 6px; width: ' + (pct || 0) + '%; background: #FFA726',
+  dueStyle: 'margin-top: 8px; font-size: 12px; font-weight: 600; color: ' + (late ? '#FF7B72' : '#8FA0B5')
+});
+const raw = [
+  ['Inventory', 'premise, series fit, rank', [book('Standalone', '[Idea: lighthouse novella]', 'Excitement 4 · readiness 2', 'Rank #4')]],
+  ['Outline', 'outline, target words, draft date', [book('[Series] · Book 3', '[Working title C]', '22 of 30 chapters outlined', 'Draft starts Jan 5')]],
+  ['Drafting', 'full draft', [book('[Series] · Book 2', '[Working title B]', '41,300 / 85,000 words · 1,020 a day', 'Draft due Dec 19', 49, false)]],
+  ['Revision', 'revised draft', [book('[Series] · Book 1', '[Working title A]', 'Pass 3 of 5 · line edit', 'Overdue 2 days', 60, true)]],
+  ['Editing', 'locked text', []],
+  ['Production', 'proof approved', [book('Standalone', '[Working title D]', 'Cover final · ISBNs pending', 'Pre-order live in 9 days')]],
+  ['Launch', 'retrospective', []],
+  ['Backlist', 'sales tracked', [book('Standalone', '[Published title E]', 'Evergreen ads on', 'Self-published')]]
+];
+const stages = raw.map((r, i) => ({
+  num: i + 1, name: r[0], gate: r[1], books: r[2], count: r[2].length,
+  colStyle: 'border-radius: 12px; padding: 14px; min-height: 520px; box-sizing: border-box; ' +
+    (r[0] === 'Drafting' ? 'background: #2A1E10; border: 2px solid #FF8F00' : 'background: #111A28; border: 2px solid transparent')
+}));
+return { stages };
+}
+}
+</script>
+</body>
+</html>
