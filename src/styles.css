@@ -122,3 +122,9 @@ label.inline select { flex: 1; min-width: 0; width: 100%; }
   .banner { padding-left: 16px; padding-right: 16px; }
 }
 .small-btn { min-height: 36px; padding: 0 12px; margin-left: 8px; }
+/* Home-screen app on iPhone: keep clear of the status bar and home indicator. */
+.topbar { padding-top: max(10px, env(safe-area-inset-top)); padding-left: max(24px, env(safe-area-inset-left)); padding-right: max(24px, env(safe-area-inset-right)); }
+.main { padding-bottom: max(24px, env(safe-area-inset-bottom)); }
+@media (max-width: 640px) {
+  .topbar { padding-left: max(16px, env(safe-area-inset-left)); padding-right: max(16px, env(safe-area-inset-right)); }
+}
