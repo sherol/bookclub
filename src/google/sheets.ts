@@ -2,8 +2,16 @@ import { CURRENT_WORDS_FORMULA, STAGES, TABS, TASK_STATUSES, PUBLISHING_PATHS, t
 
 const SHEETS = 'https://sheets.googleapis.com/v4/spreadsheets'
 const DRIVE = 'https://www.googleapis.com/drive/v3/files'
-// Marks the sheet this app created, so it can be found again with the drive.file scope.
+// Marks the sheet and folder this app created, so they can be found again with
+// the drive.file scope (which only sees files this app made).
 const APP_PROPERTY = { key: 'bookclub', value: 'v1' }
+const FOLDER_PROPERTY = { key: 'bookclub', value: 'folder' }
+const FOLDER_NAME = 'Bookclub'
+const SHEET_MIME = 'application/vnd.google-apps.spreadsheet'
+const FOLDER_MIME = 'application/vnd.google-apps.folder'
+
+const tagged = (p: { key: string; value: string }, mime: string) =>
+  `appProperties has { key='${p.key}' and value='${p.value}' } and mimeType='${mime}' and trashed=false`
 
 export class AuthError extends Error {}
 
@@ -37,6 +45,7 @@ export function asEntered(value: Cell): Cell {
 
 export class SheetsClient {
   spreadsheetId = ''
+  folderId = ''
   private headers: Partial<Record<TabName, string[]>> = {}
 
   constructor(private getToken: GetToken, private fetchImpl: typeof fetch = fetch.bind(globalThis)) {}
@@ -62,18 +71,53 @@ export class SheetsClient {
     return `https://docs.google.com/spreadsheets/d/${this.spreadsheetId}/edit`
   }
 
-  /** Finds the Bookclub sheet this app created earlier, or creates it with every tab set up. */
-  async open(): Promise<void> {
-    const q = `appProperties has { key='${APP_PROPERTY.key}' and value='${APP_PROPERTY.value}' } and trashed=false`
-    const found = await this.request<{ files: { id: string }[] }>(
-      `${DRIVE}?q=${encodeURIComponent(q)}&fields=files(id)&orderBy=createdTime`,
+  get folderUrl(): string {
+    return `https://drive.google.com/drive/folders/${this.folderId}`
+  }
+
+  private async find(query: string): Promise<{ id: string; parents?: string[] } | undefined> {
+    const found = await this.request<{ files: { id: string; parents?: string[] }[] }>(
+      `${DRIVE}?q=${encodeURIComponent(query)}&fields=files(id,parents)&orderBy=createdTime`,
     )
-    if (found.files.length > 0) {
-      this.spreadsheetId = found.files[0].id
+    return found.files[0]
+  }
+
+  /**
+   * Finds the Bookclub sheet this app created earlier, or creates it with every tab set up.
+   * The sheet lives in its own "Bookclub" folder in Drive, apart from other apps' sheets.
+   */
+  async open(): Promise<void> {
+    const folder = await this.find(tagged(FOLDER_PROPERTY, FOLDER_MIME))
+    this.folderId =
+      folder?.id ??
+      (
+        await this.request<{ id: string }>(`${DRIVE}?fields=id`, {
+          method: 'POST',
+          body: JSON.stringify({
+            name: FOLDER_NAME,
+            mimeType: FOLDER_MIME,
+            appProperties: { [FOLDER_PROPERTY.key]: FOLDER_PROPERTY.value },
+          }),
+        })
+      ).id
+
+    const sheet = await this.find(tagged(APP_PROPERTY, SHEET_MIME))
+    if (sheet) {
+      this.spreadsheetId = sheet.id
+      // Sheets made before the folder existed sit in My Drive; move them in.
+      const parents = sheet.parents ?? []
+      if (!parents.includes(this.folderId)) await this.moveIntoFolder(parents)
     } else {
       await this.create()
     }
     await this.loadHeaders()
+  }
+
+  private async moveIntoFolder(currentParents: string[], metadata: object = {}): Promise<void> {
+    const params = new URLSearchParams({ addParents: this.folderId, fields: 'id' })
+    const others = currentParents.filter((p) => p !== this.folderId)
+    if (others.length) params.set('removeParents', others.join(','))
+    await this.request(`${DRIVE}/${this.spreadsheetId}?${params}`, { method: 'PATCH', body: JSON.stringify(metadata) })
   }
 
   private async create(): Promise<void> {
@@ -139,10 +183,9 @@ export class SheetsClient {
       }),
     })
 
-    await this.request(`${DRIVE}/${this.spreadsheetId}`, {
-      method: 'PATCH',
-      body: JSON.stringify({ appProperties: { [APP_PROPERTY.key]: APP_PROPERTY.value } }),
-    })
+    // Tag the sheet and move it out of My Drive into the Bookclub folder.
+    const { parents = [] } = await this.request<{ parents?: string[] }>(`${DRIVE}/${this.spreadsheetId}?fields=parents`)
+    await this.moveIntoFolder(parents, { appProperties: { [APP_PROPERTY.key]: APP_PROPERTY.value } })
   }
 
   private async loadHeaders(): Promise<void> {

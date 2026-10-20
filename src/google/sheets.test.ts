@@ -30,21 +30,47 @@ describe('helpers', () => {
 })
 
 describe('SheetsClient.open', () => {
-  it('reuses the sheet it created before', async () => {
-    const g = fakeGoogle((c) => (c.url.includes('drive/v3') ? { json: { files: [{ id: 'abc' }] } } : { json: headerBatch() }))
+  const isFolderQuery = (c: Call) => c.url.includes("value='folder'")
+  const isSheetQuery = (c: Call) => c.url.includes("value='v1'")
+
+  it('reuses the folder and the sheet already in it', async () => {
+    const g = fakeGoogle((c) => {
+      if (c.method === 'GET' && isFolderQuery(c)) return { json: { files: [{ id: 'fold1' }] } }
+      if (c.method === 'GET' && isSheetQuery(c)) return { json: { files: [{ id: 'abc', parents: ['fold1'] }] } }
+      return { json: headerBatch() }
+    })
     const client = new SheetsClient(async () => 'tok', g.fetchImpl)
     await client.open()
     expect(client.spreadsheetId).toBe('abc')
-    expect(g.calls.filter((c) => c.method === 'POST')).toHaveLength(0)
-    expect(g.calls[0].url).toContain("appProperties has { key='bookclub' and value='v1' }")
+    expect(client.folderId).toBe('fold1')
+    expect(g.calls.filter((c) => c.method !== 'GET')).toHaveLength(0)
   })
 
-  it('creates a sheet with every tab, headers and dropdowns when none exists', async () => {
+  it('moves a sheet made before the folder existed into the folder', async () => {
+    const g = fakeGoogle((c) => {
+      if (c.method === 'GET' && isFolderQuery(c)) return { json: { files: [] } }
+      if (c.method === 'POST' && c.url.includes('drive/v3/files')) return { json: { id: 'fold2' } }
+      if (c.method === 'GET' && isSheetQuery(c)) return { json: { files: [{ id: 'abc', parents: ['rootId'] }] } }
+      return { json: headerBatch() }
+    })
+    const client = new SheetsClient(async () => 'tok', g.fetchImpl)
+    await client.open()
+    const folder = g.calls.find((c) => c.method === 'POST' && c.url.includes('drive/v3/files'))!
+    expect(folder.body).toEqual({ name: 'Bookclub', mimeType: 'application/vnd.google-apps.folder', appProperties: { bookclub: 'folder' } })
+    const move = g.calls.find((c) => c.method === 'PATCH')!
+    expect(move.url).toContain('/drive/v3/files/abc?addParents=fold2')
+    expect(move.url).toContain('removeParents=rootId')
+    expect(g.calls.some((c) => c.url.endsWith('/v4/spreadsheets'))).toBe(false)
+  })
+
+  it('creates the sheet inside the folder with every tab, headers and dropdowns', async () => {
     const tabs = Object.keys(TABS)
     const g = fakeGoogle((c) => {
-      if (c.url.includes('drive/v3') && c.method === 'GET') return { json: { files: [] } }
+      if (c.method === 'GET' && isFolderQuery(c)) return { json: { files: [{ id: 'fold1' }] } }
+      if (c.method === 'GET' && isSheetQuery(c)) return { json: { files: [] } }
       if (c.url.endsWith('/v4/spreadsheets') && c.method === 'POST')
         return { json: { spreadsheetId: 'new1', sheets: tabs.map((title, i) => ({ properties: { sheetId: i, title } })) } }
+      if (c.method === 'GET' && c.url.includes('/drive/v3/files/new1')) return { json: { parents: ['rootId'] } }
       if (c.url.includes('batchGet')) return { json: headerBatch() }
       return { json: {} }
     })
@@ -56,10 +82,10 @@ describe('SheetsClient.open', () => {
     const values = g.calls.find((c) => c.url.includes('values:batchUpdate'))!
     expect(values.body.data[1]).toEqual({ range: "'Books'!A1", values: [[...TABS.Books]] })
     const format = g.calls.find((c) => c.url.endsWith(':batchUpdate') && !c.url.includes('values'))!
-    const stageRule = format.body.requests[0].setDataValidation
-    expect(stageRule.range.startColumnIndex).toBe(TABS.Books.indexOf('Stage'))
+    expect(format.body.requests[0].setDataValidation.range.startColumnIndex).toBe(TABS.Books.indexOf('Stage'))
     const tag = g.calls.find((c) => c.method === 'PATCH')!
-    expect(tag.url).toContain('/drive/v3/files/new1')
+    expect(tag.url).toContain('/drive/v3/files/new1?addParents=fold1')
+    expect(tag.url).toContain('removeParents=rootId')
     expect(tag.body).toEqual({ appProperties: { bookclub: 'v1' } })
   })
 })
@@ -67,7 +93,8 @@ describe('SheetsClient.open', () => {
 describe('reading and writing', () => {
   async function opened(handler: (c: Call) => { status?: number; json: unknown }) {
     const g = fakeGoogle((c) => {
-      if (c.url.includes('drive/v3')) return { json: { files: [{ id: 'abc' }] } }
+      if (c.url.includes("value='folder'")) return { json: { files: [{ id: 'fold1' }] } }
+      if (c.url.includes('drive/v3')) return { json: { files: [{ id: 'abc', parents: ['fold1'] }] } }
       if (c.url.includes('batchGet') && c.url.includes('!1:1')) return { json: headerBatch() }
       return handler(c)
     })
@@ -105,7 +132,7 @@ describe('reading and writing', () => {
   it('refreshes the token once on 401', async () => {
     let n = 0
     const getToken = vi.fn(async () => 'tok')
-    const g = fakeGoogle(() => (n++ === 0 ? { status: 401, json: {} } : { json: { files: [{ id: 'abc' }] , valueRanges: [] } }))
+    const g = fakeGoogle(() => (n++ === 0 ? { status: 401, json: {} } : { json: { files: [{ id: 'abc', parents: ['abc'] }], valueRanges: [] } }))
     const client = new SheetsClient(getToken, g.fetchImpl)
     await client.open()
     expect(getToken).toHaveBeenCalledWith(true)

@@ -15,7 +15,7 @@ Because the project is shared, Google's consent window shows that project's app 
 
 ## Using it
 
-On the site, click **Connect Google Sheet** and approve access in the Google window. The first time, the app creates a sheet called **Bookclub** in your Drive with every tab, header row and dropdown set up. After that it finds the same sheet again.
+On the site, click **Connect Google Sheet** and approve access in the Google window. The first time, the app creates a **Bookclub** folder in your Drive and, inside it, a sheet called **Bookclub** with every tab, header row and dropdown set up. After that it finds the same folder and sheet again. It keeps its files in that folder, apart from SheetSync's sheets, and a Bookclub sheet made before the folder existed is moved into it on the next connect.
 
 - Rows you add or change in the sheet show up in the app. The app reads columns by header name, so don't rename the headers.
 - **Current words** on the Books tab is a formula that totals the Sessions tab. Don't type over it.
