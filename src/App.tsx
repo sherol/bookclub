@@ -16,7 +16,8 @@ function currentRoute(): Route {
   return r in ROUTES ? (r as Route) : 'board'
 }
 
-export type Run = (change: (store: Store) => Promise<void>) => Promise<void>
+/** Saves a change, then reloads. Resolves false if the change failed, so forms can keep what was typed. */
+export type Run = (change: (store: Store) => Promise<void>) => Promise<boolean>
 
 // Google sign-in in the browser lasts for the page only; remember that the
 // person connected before so the button can say "Reconnect".
@@ -56,21 +57,46 @@ export function App() {
   }, [])
 
   useEffect(() => {
-    reload(store).catch((e) => setError(messageOf(e)))
-  }, [store, reload])
+    // Ignore a load that finishes after the store changed (e.g. signing out mid-load).
+    let current = true
+    store
+      .load()
+      .then((d) => {
+        if (current) setData(d)
+      })
+      .catch((e) => {
+        if (!current) return
+        setError(messageOf(e))
+        setExpired(isExpired(e))
+      })
+    return () => {
+      current = false
+    }
+  }, [store])
 
   const run: Run = async (change) => {
     setBusy(true)
     setError('')
-    try {
-      await change(store)
-      await reload(store)
-    } catch (e) {
+    const fail = (e: unknown) => {
       setError(messageOf(e))
       setExpired(isExpired(e))
+    }
+    try {
+      await change(store)
+    } catch (e) {
+      fail(e)
+      setBusy(false)
+      return false
+    }
+    // The change is saved; a failed reload shouldn't make the form keep (and resend) it.
+    try {
+      await reload(store)
+    } catch (e) {
+      fail(e)
     } finally {
       setBusy(false)
     }
+    return true
   }
 
   async function connect() {

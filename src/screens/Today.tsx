@@ -35,8 +35,8 @@ export function Today({ data, run, busy }: Props) {
     const words = Number(f.get('words')) || 0
     const mins = Number(f.get('minutes')) || 0
     if (!bookId || words <= 0) return
-    await run((store) => store.logSession({ date: today, bookId, words, minutes: mins }))
-    form.reset()
+    const saved = await run((store) => store.logSession({ date: today, bookId, words, minutes: mins }))
+    if (saved) form.reset()
   }
 
   return (
