@@ -46,10 +46,10 @@ export function Club({ data, run, busy }: Props) {
     ]
       .filter(Boolean)
       .join(' · ')
-    await run((store) =>
+    const saved = await run((store) =>
       store.postCheckIn({ member, book: book ? `${book.title} · ${book.stage}` : '', update, ask: get('ask') }),
     )
-    form.reset()
+    if (saved) form.reset()
   }
 
   return (

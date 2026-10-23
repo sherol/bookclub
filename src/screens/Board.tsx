@@ -117,7 +117,7 @@ function AddBook({ run, busy, onDone }: { run: Run; busy: boolean; onDone: () =>
     e.preventDefault()
     const f = new FormData(e.currentTarget)
     const get = (k: string) => String(f.get(k) ?? '').trim()
-    await run((store) =>
+    const saved = await run((store) =>
       store.addBook({
         title: get('title'),
         series: get('series'),
@@ -128,7 +128,7 @@ function AddBook({ run, busy, onDone }: { run: Run; busy: boolean; onDone: () =>
         publishingPath: get('publishingPath'),
       }),
     )
-    onDone()
+    if (saved) onDone()
   }
   return (
     <form className="panel form-grid" onSubmit={submit}>
